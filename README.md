@@ -1,6 +1,6 @@
 # Movie App 🎥
 
-This project is a **Rich Internet Application (RIA)** designed for movie enthusiasts to view, add, edit, and delete movie details dynamically. The application uses modern web technologies and provides data visualization for a rich user experience.
+This project is a **Rich Internet Application (RIA)** designed to view, add, edit, and delete movie details dynamically. The application uses modern web technologies and provides data visualization for a rich user experience.
 
 ---
 
