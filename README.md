@@ -23,12 +23,6 @@ This project is a **Rich Internet Application (RIA)** designed to view, add, edi
 
 ---
 
-## Setup Instructions 🖥️
-
-### Prerequisites:
-- [Node.js](https://nodejs.org/) installed on your machine.
-- [Git](https://git-scm.com/) installed on your machine.
-
 ### Steps to Run Locally:
 1. Clone the repository:
    ```bash
