@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path'); // Add this
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +18,8 @@ app.use(express.static(path.join(__dirname, 'frontend')));
 let movies = [
     { id: 1, title: "Inception", genre: "Sci-Fi", rating: 8.8 },
     { id: 2, title: "The Dark Knight", genre: "Action", rating: 9.0 },
+    { id: 3, title: "Interstellar", genre: "Sci-Fi", rating: 8.6 },
+    { id: 4, title: "Pulp Fiction", genre: "Drama", rating: 8.9 }
 ];
 
 // Routes
@@ -30,7 +32,7 @@ app.get('/api/movies', (req, res) => {
 app.post('/api/movies', (req, res) => {
     const { title, genre, rating } = req.body;
     const newMovie = {
-        id: movies.length + 1,
+        id: movies.length > 0 ? Math.max(...movies.map(m => m.id)) + 1 : 1,
         title,
         genre,
         rating: parseFloat(rating),
@@ -41,15 +43,18 @@ app.post('/api/movies', (req, res) => {
 
 // Edit a movie
 app.put('/api/movies/:id', (req, res) => {
-    const { id } = req.params;
+    const id = parseInt(req.params.id);
     const { title, genre, rating } = req.body;
 
-    const movie = movies.find(m => m.id === parseInt(id));
-    if (movie) {
-        movie.title = title;
-        movie.genre = genre;
-        movie.rating = parseFloat(rating);
-        res.json(movie);
+    const movieIndex = movies.findIndex(m => m.id === id);
+    if (movieIndex !== -1) {
+        movies[movieIndex] = {
+            id,
+            title,
+            genre,
+            rating: parseFloat(rating)
+        };
+        res.json(movies[movieIndex]);
     } else {
         res.status(404).json({ message: "Movie not found" });
     }
@@ -57,12 +62,12 @@ app.put('/api/movies/:id', (req, res) => {
 
 // Delete a movie
 app.delete('/api/movies/:id', (req, res) => {
-    const { id } = req.params;
-    const index = movies.findIndex(m => m.id === parseInt(id));
+    const id = parseInt(req.params.id);
+    const index = movies.findIndex(m => m.id === id);
 
     if (index !== -1) {
-        movies.splice(index, 1);
-        res.json({ message: "Movie deleted successfully" });
+        const deletedMovie = movies.splice(index, 1)[0];
+        res.json({ message: "Movie deleted successfully", movie: deletedMovie });
     } else {
         res.status(404).json({ message: "Movie not found" });
     }
